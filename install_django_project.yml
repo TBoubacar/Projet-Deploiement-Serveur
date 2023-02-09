@@ -5,10 +5,10 @@
   become: true
   tasks:
 
-     - name: "----->	Copie du projet Django sur la kvm (/var/www/Django)"
-       copy:
-         src: Django/
-         dest: /var/www/Django
+    # - name: "----->	Copie du projet Django sur la kvm (/var/www/Django)"
+    #   copy:
+    #     src: Django/
+    #     dest: /var/www/Django
 
      - name : "----->    Installation de PIP 3"
        apt:
