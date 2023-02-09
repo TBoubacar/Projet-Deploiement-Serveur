@@ -1,0 +1,60 @@
+---
+
+- name: "----->    Installation de la plateforme Web avec Laminas sur notre serveur"
+  hosts: all
+  become: true
+  tasks:
+
+    # - name: ----->	Copie du projet Laminas vers la kvm (/var/www/Laminas)
+    #   copy:
+    #    src: Laminas/
+    #    dest: /var/www/Laminas
+     
+     - name: "----->    Upgrade des paquêts"
+       apt:
+         upgrade: dist
+
+     - name: "----->	Update des paquêts"
+       apt:
+         update_cache: yes
+
+     - name: "----->    Ajout des clefs et certificats pour PHP"
+       apt:
+         name:
+           - ca-certificates
+           - apt-transport-https
+           - software-properties-common
+           - wget
+           - curl
+           - lsb-release
+         state: present
+
+     - name: "----->    Ajout des clefs supplementaires pour PHP"
+       shell: curl -sSL https://packages.sury.org/php/README.txt | bash -x
+       args:
+         executable: /bin/bash
+
+     - name: "----->    Update des paquêts"
+       apt:
+         update_cache: yes
+
+     - name: "----->    Installation de PHP"
+       apt:
+         name: php8.1
+         state: present
+
+     - name: "----->	Installation de SQLite3"
+       apt:
+         name: sqlite3
+         state: present
+
+     - name: "----->    Installation de PDO pour SQLite3"
+       apt:
+         name: php8.1-sqlite3
+
+     - name: "----->    Installation de PHP-intl"
+       apt:
+         name: php8.1-intl
+           
+     - name: "----->    Changement des droits pour la Base de données de Laminas"
+       shell: chown -R root:www-data /var/www/Laminas/data/ && chmod a+w /var/www/Laminas/

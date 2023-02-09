@@ -1,0 +1,32 @@
+---
+
+- name: "----->    Installation de la plateforme Web avec Django sur notre serveur"
+  hosts: all
+  become: true
+  tasks:
+
+     - name: "----->	Copie du projet Django sur la kvm (/var/www/Django)"
+       copy:
+         src: Django/
+         dest: /var/www/Django
+
+     - name : "----->    Installation de PIP 3"
+       apt:
+         name: python3-pip
+         state: present
+
+     - name: "----->	Installation du framework Django"
+       pip:
+         name: django
+
+     - name: "----->	Installation de UWSGI"
+       pip:
+         name: uwsgi
+
+     - name: "----->     Copie des fichiers de styles de l'adminstrateur django dans notre application"
+       shell: cp -r /var/www/Django/environment/lib/python3.9/site-packages/django/contrib/admin/static/ /var/www/Django/environment/myProjetGNUWebSite/polls/static/admin
+
+     - name: "----->     Copie du fichier UWSGI.ini dans le dosssier /root/"
+       copy:
+         src: uwsgi.ini
+         dest: /root/

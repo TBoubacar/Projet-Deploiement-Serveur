@@ -1,0 +1,49 @@
+---
+
+- name: "----->    Installation du serveur Apache 2"
+  hosts: all
+  become: true
+  tasks:
+
+     - name: "----->    Upgrade des paquêts"
+       apt:
+         upgrade: dist
+
+     - name: "----->    Update des paquêts"
+       apt:
+         update_cache: yes
+
+     - name: "----->    Installation Apache2"
+       apt:
+         name: apache2
+         state: present
+         update_cache: yes
+
+     - name: "----->    Ajout du Proxy pour Apache2"
+       command: a2enmod proxy proxy_http rewrite
+
+     - name : "----->    Installation de Libapache2-mod-php"
+       apt:
+         name: libapache2-mod-php8.1
+         state: present
+
+     - name: "----->    Ouverture du port 8001"
+       copy:
+         src: configuration/port.conf
+         dest: /etc/apache2/
+
+     - name: "----->    Configuration (000-default.conf)"
+       copy:
+         src: configuration/000-default.conf
+         dest: /etc/apache2/sites-available/
+
+     - name: "----->    Configuration (laminas.conf)"
+       copy:
+         src: configuration/laminas.conf
+         dest: /etc/apache2/sites-available/
+
+     - name: "----->    Ajout de la plateforme Web Laminas sur notre serveur apache"
+       command: a2ensite laminas.conf
+
+     - name: "----->	Redemarrer Apache2"
+       command: service apache2 reload
