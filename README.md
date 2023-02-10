@@ -21,3 +21,25 @@ ansible-playbook install_apache.yml -i hosts.yml
 #### LAUNCH DJANGO'S SERVER
 On your KVM, launch this command :
 uwsgi --ini /root/uwsgi.ini
+
+### Ouvrir le projet Django et modifier le fichier urls.py de l'application <Django/environment/myProjetGNUWebSite/myProjetGNUWebSite/urls.py>
+Remplacer : urlpatterns = [
+    path('polls/', include('polls.urls')),
+    path("admin/", admin.site.urls),
+]
+Par : 
+urlpatterns = [
+    path('django/', include('polls.urls')),
+    path("django/admin/", admin.site.urls),
+]
+
+### Ouvrir le projet Laminas et modifier le fichier module.php de l'application
+  1. Modifier le fichier (module/Application/config/module.config.ph) en remplaçant la valeur de route :
+            'route'    => '/laminas/'
+  2. Modifier le fichier (module/Application/view/layout/layout.phtml) :
+            ->prependStylesheet($this->basePath('laminas/css/style.css'))
+            ->prependStylesheet($this->basePath('laminas/css/bootstrap.min.css'))
+            Et partout ou il y a /img -> /laminas/img, etc.
+  3. Modifier le fichier (module/Album/config/module.config.php) :
+            'route' => '/laminas/album[/:action[/:id]]',
+
