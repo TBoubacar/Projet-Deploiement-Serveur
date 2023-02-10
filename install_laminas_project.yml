@@ -57,4 +57,4 @@
          name: php8.1-intl
            
      - name: "----->    Changement des droits pour la Base de données de Laminas"
-       shell: chown -R root:www-data /var/www/Laminas/data/ && chmod a+w /var/www/Laminas/
+       shell: chown -R root:www-data /var/www/Laminas/data/ && chmod a+w /var/www/Laminas/data/laminas.db
